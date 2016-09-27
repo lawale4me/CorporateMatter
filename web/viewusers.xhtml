@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                >
+     
+      <ui:define name="title">All Users</ui:define>
+    <ui:define name="content">             
+             <h:form id="form">
+                 <p:dataTable var="userr" value="#{newUserMBean.adminUsers}" widgetVar="casesTable"
+                              selection="#{newUserMBean.selectedUser}" selectionMode="single" 
+                              rowKey="#{userr.userID}" rows="10" 
+                              filteredValue="#{newUserMBean.filteredUsers}"
+                                      > 
+                            
+                            <p:ajax event="rowSelect"  listener="#{newUserMBean.onRowSelect}" /> 
+                            
+                            <f:facet name="header">
+                                All Admin Users
+                            </f:facet>
+                            <p:column filterBy="#{userr.username}" headerText="Username" footerText="contains" filterMatchMode="contains">                               
+                                <h:outputText value="#{userr.username}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Email" />
+                                </f:facet>
+                                <h:outputText value="#{userr.email}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="No of cases" />
+                                </f:facet>                                
+                                <h:outputText value="#{fn:length(userr.casesCollection)}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Role" />
+                                </f:facet>
+                                <h:outputText value="#{userr.role}" />
+                            </p:column>
+                            
+                        </p:dataTable>                        
+
+                    </h:form>
+    </ui:define>
+</ui:composition>
+

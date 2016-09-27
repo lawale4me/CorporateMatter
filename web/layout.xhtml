@@ -1,0 +1,79 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    
+    <f:view contentType="text/html">
+        <h:head>            
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>                
+                <link href="#{request.contextPath}/resource/css/styles.css" rel="stylesheet" type="text/css" />    
+                <title><ui:insert name="title">Default title</ui:insert></title>    
+            </f:facet>        
+        </h:head>
+        <h:body> 
+            <p:layout fullPage="true" >
+                <p:layoutUnit position="north"  collapsible="true"
+                              gutter="0" resizable="true"  size="85" closable="true">                                        
+                          <h:form>
+                        <table width="100%" align="left" border="0"  cellpadding="0" bgcolor="grey" >
+                            <tr bgcolor="grey"  align="left">                                  
+                            <td>
+                            <h:graphicImage  title="IControlManager" value="/resources/images/corporatematter.png"/> 
+                            
+                            </td>                            
+                        <td>
+                            <p>Welcome, #{loginMBean.userid}</p>                       
+                        </td>
+                        <td align="right">
+                        <p:commandButton action="#{loginMBean.logout}" value="Logout"  ajax="false">
+                        </p:commandButton>
+                        </td>
+                        </tr>
+                     </table>    
+                    </h:form>
+            </p:layoutUnit>                
+                <p:layoutUnit gutter="0"  position="west" size="250" collapsible="true" style="background: #FF6600 !important;" >
+                    <p:menu style="background: #FF6600 !important;">                        
+                        <p:submenu  label="CASES &amp; MATTERS" >
+                            <p:menuitem value="MyCases" url="/mycases"/>
+                            <p:menuitem value="My Activities" url="/home"/>
+                            <c:if test="#{loginMBean.admin}">                            
+                                <p:menuitem value="Create New Case" url="/newcases"/>
+                            </c:if>                                                        
+                        </p:submenu>
+                        <p:submenu  label="USERS" >
+                            <c:if test="#{loginMBean.admin}">  
+                            <p:menuitem value="View Users" url="/viewusers"/>
+                            <p:menuitem value="Create New User" url="/createuser"/>
+                            </c:if>
+                        </p:submenu>
+                        <p:submenu  label="Reports" >
+                            <p:menuitem value="Audit Reports" url="/auditreport"/>
+                            <p:menuitem value="Case Reports" url="/casereport"/>
+                        </p:submenu>
+                        <p:submenu  label="PREFERENCES" >
+                                                   
+                        </p:submenu>                   
+                    </p:menu>              
+                </p:layoutUnit>
+                
+                <p:layoutUnit position="center"  gutter="0">                    
+                    <ui:insert name="content"></ui:insert>
+                </p:layoutUnit>
+                
+                <p:layoutUnit position="south" size="50" closable="true" collapsible="true" gutter="0" style="background: #FF6600 !important;">
+                    <center><B>IControlManager</B></center>                    
+                </p:layoutUnit>
+                
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>
+
+

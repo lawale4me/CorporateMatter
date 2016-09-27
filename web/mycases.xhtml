@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                >
+    
+      <ui:define name="title">My Cases</ui:define>
+    <ui:define name="content">             
+             <h:form id="form">
+                        <p:dataTable var="cases" value="#{casesMBean.cases}" widgetVar="casesTable"
+                                     selection="#{casesMBean.selectedCases}" selectionMode="single" 
+                                     rowKey="#{cases.caseID}" rows="10" 
+                                     filteredValue="#{casesMBean.filteredList}"
+                                      > 
+                            
+                            <p:ajax event="rowSelect"  listener="#{casesMBean.onRowSelect}" /> 
+                            
+                            <f:facet name="header">
+                                Click on case to see details
+                            </f:facet>
+                            <p:column filterBy="#{cases.caseName}" headerText="Title" footerText="contains" filterMatchMode="contains">                               
+                                <h:outputText value="#{cases.caseName}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Case Reference" />
+                                </f:facet>
+                                <h:outputText value="#{cases.caseRef}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Practice Area" />
+                                </f:facet>
+                                <h:outputText value="#{cases.practiceArea}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Status" />
+                                </f:facet>
+                                <h:outputText value="#{cases.status}" />
+                            </p:column>
+
+                          <!--                            
+                            <p:column style="width:32px">  
+                                <p:commandButton action="viewcase?faces-redirect=true" value="View">                                      
+                                </p:commandButton>  
+                            </p:column> 
+                          -->
+                            
+                        </p:dataTable>                        
+
+                    </h:form>
+    </ui:define>
+</ui:composition>

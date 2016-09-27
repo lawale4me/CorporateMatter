@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                >
+    
+      <ui:define name="title">HOME PAGE</ui:define>
+    <ui:define name="content">             
+        
+        <p:chart type="bar" model="#{casesMBean.barModel}" style="height:200px"/>
+        
+             <h:form id="form">                                                   
+                 
+                 <p:dataTable var="activity" value="#{activityMBean.activities}" widgetVar="casesTable"
+                                     selection="#{activityMBean.selectedActivity}" selectionMode="single" 
+                                     rowKey="#{activity.activityID}" rows="10"  filteredValue="#{activityMBean.filteredActivity}" >                                                                                                         
+                            <f:facet name="header">
+                                Activities
+                            </f:facet>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Activity Owner" />
+                                </f:facet>
+                                <h:outputText value="#{activity.owner.username}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Activity Type" />
+                                </f:facet>
+                                <h:outputText value="#{activity.activityType}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Activity Date" />
+                                </f:facet>
+                                <h:outputText value="#{activity.activityDate}" />
+                            </p:column>
+
+                            <f:facet name="footer">
+                                <p:commandButton id="footercmbtn" value="View" image="ui-icon ui-icon-search"                                                 
+                                                 update=":form:casesDetail" oncomplete="PF('casesDialog').show()"/>                                
+                            </f:facet>
+
+                        </p:dataTable>
+
+                        <p:dialog header="Activity Details" widgetVar="casesDialog" resizable="false"
+                                  width="200" showEffect="clip" hideEffect="fold">
+                                                  
+
+                            <h:panelGrid id="casesDetail" columns="2" cellpadding="4">
+                                <f:facet name="header">
+                                    
+                                </f:facet>
+                                <h:outputText value="Activity Date" />
+                                <h:outputText value="#{activityMBean.selectedActivity.activityDate}" />
+
+                                <h:outputText value="Associated Case:" />
+                                <h:outputText value="#{activityMBean.selectedActivity.caseID.caseName}" />
+
+                                <h:outputText value="Case Practice Area:" />
+                                <h:outputText value="#{activityMBean.selectedActivity.caseID.practiceArea}" />
+                                
+                            </h:panelGrid>
+                        </p:dialog>
+
+                    </h:form>
+    </ui:define>
+</ui:composition>

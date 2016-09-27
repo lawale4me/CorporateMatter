@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>                
+                <link href="#{request.contextPath}/resource/css/styles.css" rel="stylesheet" type="text/css" />    
+                <title><ui:insert name="title">Corporate Matter</ui:insert></title>    
+            </f:facet>        
+        </h:head>
+        <h:body> 
+            <p:layout fullPage="true" >
+                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true" styleClass="" gutter="0">                    
+                    <table width="100%" bgcolor="grey" align="left" border="0" >
+                        <tr bgcolor="grey" >                                                        
+                            <td><h:graphicImage  title="ICONTROLMANAGER" value="/resources/images/corporatematter.png"/> </td>                            
+                        </tr>
+                    </table>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center" >      
+                    <center>
+                    <h:form >
+                        <p:growl id="messages" showDetail="true" />
+                        <table width="40%" align="center" style="margin: 60px 0px 0px 120px">
+                            <tr>
+                                <td id="top" align="center">
+                            <p:panelGrid columns="2" style="alignment-adjust: middle">
+                                <f:facet name="header">User Login</f:facet>
+                                <h:outputLabel for="username" value="username: " />
+                                <p:inputText id="username" value="#{loginMBean.userid}" label="Username" required="true" style="width:200px; height: 15px"
+                                             requiredMessage="Please enter a valid userid"/>
+
+                                <h:outputLabel for="password" value="Password : "/>
+                                <p:password id="password" value="#{loginMBean.password}" label="Password" required="true" style="width:200px; height: 15px"
+                                            requiredMessage="Please enter a valid password"/>
+                                <f:facet name="footer">
+                                    <p:commandButton icon="ui-icon-locked" value="Login" action="#{loginMBean.login2FA()}" update="messages" />
+                                </f:facet>
+                            </p:panelGrid>
+                            </td>
+                            </tr>
+                        </table>
+                    </h:form>
+                    </center>
+                </p:layoutUnit>
+                <p:layoutUnit position="south" size="50" closable="true" collapsible="true">
+                    <center><B>IControlManager</B></center>       
+                </p:layoutUnit>
+            </p:layout>
+
+
+
+        </h:body>
+
+    </f:view>
+</html>

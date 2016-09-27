@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                >
+
+    <ui:define name="title">Audit Reports</ui:define>
+    <ui:define name="content">    
+        <h:form>
+            <p:dataTable id="messageTable" widgetVar="messageTable" var="ardto" value="#{auditReportMBean.ardto}"  
+                     paginator="true" rows="10" paginatorPosition="bottom"  
+                     filteredValue="#{auditReportMBean.filteredARdto}">  
+            <f:facet name="header">  
+                <h:outputText value="Audit Report"/>                                                       
+            </f:facet>  
+                <p:column filterBy="#{ardto.username}">  
+                <f:facet name="header">  
+                    <h:outputText value="UserName"/>  
+                </f:facet>  
+                <h:outputText value="#{ardto.username}"/>  
+            </p:column>  
+                <p:column filterBy="#{ardto.action}">  
+                <f:facet name="header">  
+                    <h:outputText value="Action"/>  
+                </f:facet>  
+                    <h:outputText value="#{ardto.action}"/>  
+            </p:column>  
+                <p:column filterBy="#{ardto.actionDate}">  
+                <f:facet name="header">  
+                    <h:outputText value="Action Date"/>  
+                </f:facet>  
+                    <h:outputText value="#{ardto.actionDate}"/>  
+            </p:column>                 
+        </p:dataTable>    
+
+        <p:spacer height="30"/>  
+
+
+        <p:panel header="Export PDF and Excel">  
+            
+                <p:commandLink id="pdf" ajax="false">  
+                    <p:graphicImage value="/resources/images/pdf.png"/>  
+                    <f:setPropertyActionListener value="false" target="#{reportMBean.exporting}" />  
+                    <pe:exporter type="pdf" target="messageTable" fileName="AuditReports"  
+                                 datasetPadding="4"/>  
+
+                </p:commandLink>  
+
+                <p:spacer width="20"/>  
+
+                <p:commandLink id="xls" ajax="false">  
+                    <p:graphicImage value="/resources/images/excel.png"/>  
+                    <f:setPropertyActionListener value="false" target="#{reportMBean.exporting}" />  
+                    <pe:exporter type="xlsx" target="messageTable" fileName="AuditReports"  
+                                 datasetPadding="4"/>    
+                </p:commandLink>  
+            
+        </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>

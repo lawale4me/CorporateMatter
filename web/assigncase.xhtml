@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">View Case Info</ui:define>
+    <ui:define name="content">                                        
+
+        <h:form id="inputFormCase"  >
+            <p:growl id="messages" showDetail="true"/>   
+                <h:panelGrid id="casesDetail"  columns="2" cellpadding="4">
+                    <f:facet name="header">                                    
+                    </f:facet>                
+                    
+                    <h:outputText value="User Type" />                    
+                    <h:selectOneMenu id="usertype" label="User Type"
+                    value="#{caseExtraBean.selectedType}" >
+                        <f:selectItem itemLabel="---Select One----" itemValue="-1" />
+                        <f:selectItems value="#{userTypeMBean.userTypes}"  />
+                        <f:ajax event="change" 
+                                execute="@this" 
+                                render="userdto"
+                                listener="#{caseExtraBean.setStateOptions()}" />
+                    </h:selectOneMenu>                                        
+
+                    <h:outputText value="Select User" />                                                             
+                    <h:selectOneMenu id="userdto" value="#{caseExtraBean.userdto}">  
+                        <f:selectItems value="#{caseExtraBean.userdtos}" var="s" 
+                                       itemValue="#{s.userID}" itemLabel="#{s.username}" />
+                        <f:converter converterId="userConverter" />
+                    </h:selectOneMenu>
+
+                    <center>                         
+                        <p:commandButton value="Submit" ajax="true" 
+                                         update="messages"   actionListener="#{caseExtraBean.updateCase}"/>                           
+                    </center>
+                </h:panelGrid>
+            </h:form>
+        
+    </ui:define>
+</ui:composition>

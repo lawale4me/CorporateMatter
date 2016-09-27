@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                >
+
+    <ui:define name="title">Create a new Case</ui:define>                  
+    
+    <ui:define name="content">                            
+        <h:form enctype="form-data" >                    
+            <p:growl id="messages" showDetail="true"/>            
+            <p:panelGrid columns="2" style="ui-panelgrid tr, .ui-panelgrid td {border:0 !important;}" >
+                <f:facet name="header">
+                    <p:outputPanel>
+                        <h:outputText value="Create New Case:" />                                    
+                    </p:outputPanel>
+                </f:facet>                                                                  
+                    <h:outputText  value="Case Name" /> 
+                    <h:inputText value="#{newCaseMBean.casename}" size="40" required="true" id="casename"/>                                            
+                    <h:outputText value="Description" />
+                    <h:inputTextarea  value="#{newCaseMBean.description}" cols="40" required="true" id="description" rows="5"/>                                         
+
+                    <p:outputLabel value="Practice Area:" />                                                      
+                    <p:selectOneMenu  required="true" value="#{newCaseMBean.practicearea}" effect="drop">  
+                            <f:selectItem itemLabel="Select One" itemValue="" />      
+                            <f:selectItem itemLabel="Agreement" itemValue="Agreement" />  
+                            <f:selectItem itemLabel="Draft Agreement" itemValue="Draft Agreement" />  
+                            <f:selectItem itemLabel="Litigation" itemValue="Litigation" />                                      
+                    </p:selectOneMenu>                                                                                      
+                   <center> 
+                       <p:commandButton value="Submit" ajax="false" actionListener="#{newCaseMBean.upload}"/>                       
+                   </center>
+            </p:panelGrid>
+        </h:form>        
+    </ui:define>
+</ui:composition>

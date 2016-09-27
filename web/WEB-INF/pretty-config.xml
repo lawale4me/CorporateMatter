@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<pretty-config xmlns="http://ocpsoft.org/prettyfaces/3.3.3" 
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+               xsi:schemaLocation="http://ocpsoft.org/prettyfaces/3.3.3  http://ocpsoft.org/xml/ns/prettyfaces/ocpsoft-pretty-faces-3.3.3.xsd">
+
+    <url-mapping id="viewusers">
+        <pattern value="/viewusers" />
+        <view-id value="/faces/viewusers.xhtml"/>        
+    </url-mapping>
+    <url-mapping id="assigncase">
+        <pattern value="/assigncase" />
+        <view-id value="/faces/assigncase.xhtml"/>        
+    </url-mapping> 
+     <url-mapping id="createuser">
+        <pattern value="/createuser" />
+        <view-id value="/faces/createuser.xhtml"/>        
+    </url-mapping>  
+    <url-mapping id="mycases">
+        <pattern value="/mycases" />
+        <view-id value="/faces/mycases.xhtml"/>        
+    </url-mapping>
+    <url-mapping id="newcases">
+        <pattern value="/newcases" />
+        <view-id value="/faces/newcases.xhtml"/>        
+    </url-mapping>  
+    <url-mapping id="home">
+        <pattern value="/home" />
+        <view-id value="/faces/home.xhtml"/>      
+    </url-mapping> 
+    <url-mapping id="layout">
+        <pattern value="/layout" />
+        <view-id value="/faces/layout.xhtml"/>      
+    </url-mapping>
+    <url-mapping id="viewcase">
+        <pattern value="/viewcase" />
+        <view-id value="/faces/viewcase.xhtml"/>      
+    </url-mapping>
+    <url-mapping id="casereport">
+        <pattern value="/casereport" />
+        <view-id value="/faces/casereport.xhtml"/>      
+    </url-mapping>
+    <url-mapping id="auditreport">
+        <pattern value="/auditreport" />
+        <view-id value="/faces/auditreport.xhtml"/>      
+    </url-mapping>
+
+</pretty-config>

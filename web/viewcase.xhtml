@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition template="layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                >
+
+    <ui:define name="title">View Case Info</ui:define>
+    <ui:define name="content">                                        
+
+        <p:tabView>
+            <p:growl id="msgs" showDetail="true" />
+            <p:tab title="Case/Matter Details">                          
+                <p:panel id="detailspanel" header="View Case Details">
+                    <h:panelGrid id="campdetails" columns="2" cellpadding="4">          
+
+
+
+                        <h:outputText value="CaseName" />  
+                        <h:outputText value="#{sessionScope['cases'].caseName}" style="font-weight:bold"/>    
+
+                        <h:outputText value="Case Ref" />  
+                        <h:outputText value="#{sessionScope['cases'].caseRef}" style="font-weight:bold"/>                 
+
+                        <h:outputText value="practiceArea" />  
+                        <h:outputText value="#{sessionScope['cases'].practiceArea}" style="font-weight:bold"/>                 
+
+                        <h:outputText value="Status" />  
+                        <h:outputText value="#{sessionScope['cases'].status}" style="font-weight:bold"/> 
+
+                        <h:outputText value="Description" />  
+                        <h:outputText value="#{sessionScope['cases'].description}" style="font-weight:bold"/> 
+                        
+                        <h:outputText value="Assigned TO" />  
+                        <ui:repeat value="#{sessionScope['cases'].assignmentsCollection}" var="assignments">
+                            #{assignments.userID}
+                        </ui:repeat>
+                        <!--<h:outputText value="{sessionScope['cases'].assignedTo}" style="font-weight:bold"/>--> 
+
+                        <f:facet name="footer">
+                            <c:if test="#{loginMBean.admin}">    
+                            <p:commandButton id="footercmbtn" value="Assign Case" image="ui-icon ui-icon-search"                                                                                                                                                      
+                            oncomplete="PF('casesDialog').show()" />
+                           
+                           <!--    action="assigncase?faces-redirect=true"  />-->   
+                           
+                            <p:commandButton id="updatecase" value="Change Status" image="ui-icon-disk"                                                 
+                                             oncomplete="PF('updateCases').show()"/> 
+                             </c:if>
+                            <p:commandButton id="addComment" value="Add Comment" image="ui-icon-disk"                                                 
+                                             oncomplete="PF('addComment').show()"/> 
+                        </f:facet>                
+
+                    </h:panelGrid>   
+                    
+                    <b>Comments</b>                    
+                    <p:separator />
+                    <ui:repeat value="#{sessionScope['comments']}" var="comment1">                
+                        <h:outputText value="#{comment1.comment}" style="font-weight:bold"/> &#160;&#160;  by  
+                            <h:outputText value="#{comment1.username}" style="font-weight:bold"/>    
+                            <p:separator />
+                        </ui:repeat>
+                    
+                </p:panel>        
+            </p:tab>
+
+            <p:tab title="Documents">
+
+                <p:panel id="viewAttachment" header="View Case Details">
+                    <h:panelGrid columns="2" cellpadding="10">
+
+                        <ui:repeat value="#{sessionScope['documents']}" var="doc1">                
+                            <h:outputText value="#{doc1.documentname}" style="font-weight:bold"/>
+                            <a  href='resources/documents/#{doc1.documentname}'>Download</a>| 
+                            <h:commandButton value="Delete" type="submit"   action="#{newCaseMBean.deleteFile(doc1.documentname)}" />
+                            <a  href='resources/documents/#{doc1.documentname}'></a>
+                            <BR/>              
+                            <!-- <a  href="\/C:/TEMP/{documents.documentname}">Download</a>-->
+                            <p:separator />
+                        </ui:repeat>
+                    </h:panelGrid>
+                </p:panel>
+
+                <p:panel id="attachDocument" header="Attach a document">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <h:form enctype="multipart/form-data" prependId="false">
+
+                            <h:outputText value="FileName" />              
+                            <p:fileUpload mode="simple" value="#{caseExtraBean.file}" />
+
+                            <h:outputText value="Description" />  
+                            <h:inputText value="#{caseExtraBean.documentDescription}" size="40" required="true" id="documentDescription"/>                             
+                            
+                            <p:commandButton value="Submit" ajax="false" actionListener="#{caseExtraBean.fileUpload()}"/>
+                        </h:form>
+                    </h:panelGrid>
+                </p:panel>
+            </p:tab>
+            <p:tab title="Reports">
+
+            </p:tab>
+            <p:tab title="Message">
+
+            </p:tab>      
+        </p:tabView>     
+
+
+        <p:dialog 
+            header="Update Case" widgetVar="casesDialog" resizable="false"
+            width="250" showEffect="clip" hideEffect="fold">             
+            <h:form id="inputFormCase">
+                <h:panelGrid id="casesDetail"  columns="2" cellpadding="4">
+                    <f:facet name="header">                                    
+                    </f:facet>                
+                    
+                    <h:outputText value="User Type" />                    
+                    <h:selectOneMenu id="usertype" label="User Type"
+                    value="#{caseExtraBean.selectedType}" >
+                        <f:selectItem itemLabel="---Select One----" itemValue="-1" />
+                        <f:selectItems value="#{userTypeMBean.getUserOtherTypes()}"  />
+                        <f:ajax event="change" 
+                                execute="@this" 
+                                render="userDTOObj"
+                                listener="#{caseExtraBean.setStateOptions()}" />
+                    </h:selectOneMenu>
+
+                    <h:outputText value="Select User" />                                                                                                                 
+                    <h:selectOneMenu id="userDTOObj" value="#{caseExtraBean.userdto}">  
+                        <f:selectItems value="#{caseExtraBean.userdtos}" var="s" 
+                                       itemValue="#{s.userID}" itemLabel="#{s.username}" />
+                        <f:converter converterId="userConverter" />
+                    </h:selectOneMenu>
+
+                    <center> 
+                        <!--<p:commandButton id="dlgbtn" value="Submit" ajax="false"                                        
+                                         oncomplete="casesDialog.hide();" update="msgs" >                            
+                            <p:ajax event="click" listener="{caseExtraBean.updateCase}" />
+                        </p:commandButton>-->
+                        <p:commandButton value="Submit" ajax="false" actionListener="#{caseExtraBean.updateCase}"/>
+                    </center>
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+
+                                <p:dialog 
+                            header="Update Status" widgetVar="updateCases" resizable="false"
+                            width="250" showEffect="clip" hideEffect="fold" 
+                            dynamic="true"  >                                                  
+
+                            <h:form id="inputFormUpdate">
+                                <h:panelGrid id="casesDetail2"  columns="2" cellpadding="4">
+                                    <f:facet name="header">                                    
+                                    </f:facet>                                
+
+                                    <h:outputText value="New Case Status" />
+                                    <h:selectOneMenu id="usertype" 
+                                                     label="CaseStatus"
+                                                     value="#{caseExtraBean.selectedCaseStatus}"                                  
+                                                     >
+                                        <f:selectItems value="#{userTypeMBean.caseStatus}" />
+                                    </h:selectOneMenu>                
+                                    <center>
+                                        <p:commandButton value="Submit" ajax="false" actionListener="#{caseExtraBean.updateStatus}"/>
+                                    </center>
+
+                                </h:panelGrid>
+                            </h:form>
+                        </p:dialog>
+
+
+        <p:dialog 
+            header="Add Comment" widgetVar="addComment" resizable="false"
+            width="350" showEffect="clip" hideEffect="fold" 
+            dynamic="true"  >                                                  
+
+            <h:form id="inputFormComment">
+                <h:panelGrid id="addCmmt"  columns="2" cellpadding="4">
+                    <f:facet name="header">                                    
+                    </f:facet>                                                    
+                    
+                    <h:outputText value="Comment" />
+                    <h:inputTextarea  value="#{caseExtraBean.comment}" cols="20" required="true" id="comment" rows="5"/>                                                       
+                    <center>
+                        <p:commandButton value="Submit" ajax="false" actionListener="#{caseExtraBean.addComment}"/>
+                    </center>
+
+                </h:panelGrid>
+            </h:form>
+        </p:dialog>
+        
+        
+
+    </ui:define>
+</ui:composition>
